@@ -4,17 +4,21 @@ colors = brewer.pal(12, "Set3")
 bestcolors=colors[c(9,7,5,6,10)]
 par.default <- par()
 
-
-
-data <- read.table("CMG_Progress_Report_2014_02_success_rate.txt", head=TRUE, sep="\t")
-filedate <- "2014-02"
-
-
-modelnames <- c("AD", "AR", "AR\nconsang.", "de novo", "unknown", "X-linked", "Total")
 color.mapping_success <- hsv(h=rgb2hsv(col2rgb(bestcolors[2]))['h',], s=rgb2hsv(col2rgb(bestcolors[2]))['s',], v=.6)
 color.mapping_unsuccess <- hsv(h=rgb2hsv(col2rgb(bestcolors[1]))['h',], s=rgb2hsv(col2rgb(bestcolors[1]))['s',], v=.7)
 colors.AD_comb <- c(bestcolors[2], color.mapping_success, bestcolors[1], color.mapping_unsuccess)
 colors.novelty <- c(hsv(h=rgb2hsv(col2rgb(bestcolors[3]))['h',], s=rgb2hsv(col2rgb(bestcolors[3]))['s',], v=.6), bestcolors[3])
+
+
+
+#########
+# read in data
+#########
+
+data <- read.table("CMG_Progress_Report_2014_02_success_rate.txt", head=TRUE, sep="\t")
+filedate <- "2014-02"
+
+modelnames <- c("AD", "AR", "AR\nconsang.", "de novo", "unknown", "X-linked", "Total")
 
 include <- subset(data, subset=(overall=="first_pass_done"|overall=="complete"))
 nocohorts <- subset(include, subset=cohort=="N")
