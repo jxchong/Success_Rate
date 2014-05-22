@@ -15,8 +15,12 @@ colors.novelty <- c(hsv(h=rgb2hsv(col2rgb(bestcolors[3]))['h',], s=rgb2hsv(col2r
 # read in data
 #########
 
-data <- read.table("CMG_Progress_Report_2014_02_success_rate.txt", head=TRUE, sep="\t")
-filedate <- "2014-02"
+setwd("/Users/jxchong/Dropbox/Postdoc/CMG/UWCMG/Solve rate")
+# data <- read.table("CMG_Progress_Report_2013_12_solve_rate.txt", head=TRUE, sep="\t")
+# data <- read.table("CMG_Progress_Report_2014_02_success_rate.txt", head=TRUE, sep="\t")
+data <- read.table("CMG_Progress_Report_2014_05_success_rate.txt", head=TRUE, sep="\t")
+filedate <- "2014-05"
+
 
 modelnames <- c("AD", "AR", "AR\nconsang.", "de novo", "unknown", "X-linked", "Total")
 
