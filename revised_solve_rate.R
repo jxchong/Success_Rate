@@ -15,7 +15,7 @@ colors.novelty <- c(hsv(h=rgb2hsv(col2rgb(bestcolors[3]))['h',], s=rgb2hsv(col2r
 # read in data
 #########
 
-setwd("/Users/jxchong/Dropbox/Postdoc/CMG/UWCMG/Solve rate")
+setwd("/Users/jxchong/Dropbox/Postdoc/CMG/UWCMG/Solve rate/2014-05")
 # data <- read.table("CMG_Progress_Report_2013_12_solve_rate.txt", head=TRUE, sep="\t")
 # data <- read.table("CMG_Progress_Report_2014_02_success_rate.txt", head=TRUE, sep="\t")
 data <- read.table("CMG_Progress_Report_2014_05_success_rate.txt", head=TRUE, sep="\t")
@@ -152,17 +152,17 @@ dev.off()
 ########################################################################################
 
 # with cohorts
-# nkindreds.withcohorts.success <- sum(subset(include, select=numerator.kindreds, subset=Solved=="Y"))
-nkindreds.withcohorts.unsuccess <- sum(subset(include, select=numerator.kindreds, subset=Solved=="N"))
-nkindreds.withcohorts.success.novel <- sum(subset(include, select=numerator.kindreds, subset=(Solved=="Y"&isNovel=="Y")))
-nkindreds.withcohorts.success.notnovel <- sum(subset(include, select=numerator.kindreds, subset=(Solved=="Y"&isNovel=="N")))
+# nkindreds.withcohorts.success <- sum(subset(include, select=nkindreds, subset=Solved=="Y"))
+nkindreds.withcohorts.unsuccess <- sum(subset(include, select=nkindreds, subset=Solved=="N"))
+nkindreds.withcohorts.success.novel <- sum(subset(include, select=nkindreds, subset=(Solved=="Y"&isNovel=="Y")))
+nkindreds.withcohorts.success.notnovel <- sum(subset(include, select=nkindreds, subset=(Solved=="Y"&isNovel=="N")))
 nkindreds.withcohorts <- as.matrix(rbind(nkindreds.withcohorts.success.novel, nkindreds.withcohorts.success.notnovel, nkindreds.withcohorts.unsuccess))
 
 # without cohorts
-# nkindreds.nocohorts.success <- sum(subset(nocohorts, select=numerator.kindreds, subset=Solved=="Y"))
-nkindreds.nocohorts.unsuccess <- sum(subset(nocohorts, select=numerator.kindreds, subset=Solved=="N"))
-nkindreds.nocohorts.success.novel <- sum(subset(nocohorts, select=numerator.kindreds, subset=(Solved=="Y"&isNovel=="Y")))
-nkindreds.nocohorts.success.notnovel <- sum(subset(nocohorts, select=numerator.kindreds, subset=(Solved=="Y"&isNovel=="N")))
+# nkindreds.nocohorts.success <- sum(subset(nocohorts, select=nkindreds, subset=Solved=="Y"))
+nkindreds.nocohorts.unsuccess <- sum(subset(nocohorts, select=nkindreds, subset=Solved=="N"))
+nkindreds.nocohorts.success.novel <- sum(subset(nocohorts, select=nkindreds, subset=(Solved=="Y"&isNovel=="Y")))
+nkindreds.nocohorts.success.notnovel <- sum(subset(nocohorts, select=nkindreds, subset=(Solved=="Y"&isNovel=="N")))
 nkindreds.nocohorts <- as.matrix(rbind(nkindreds.nocohorts.success.novel, nkindreds.nocohorts.success.notnovel, nkindreds.nocohorts.unsuccess))
 
 successrate.bykindred <- as.matrix(cbind(nkindreds.withcohorts, nkindreds.nocohorts))
