@@ -15,11 +15,12 @@ colors.novelty <- c(hsv(h=rgb2hsv(col2rgb(bestcolors[3]))['h',], s=rgb2hsv(col2r
 # read in data
 #########
 
-setwd("/Users/jxchong/Dropbox/Postdoc/CMG/UWCMG/Solve rate/2014-05")
+setwd("/Users/jxchong/Dropbox/Postdoc/CMG/UWCMG/Solve rate/2014-07")
 # data <- read.table("CMG_Progress_Report_2013_12_solve_rate.txt", head=TRUE, sep="\t")
 # data <- read.table("CMG_Progress_Report_2014_02_success_rate.txt", head=TRUE, sep="\t")
-data <- read.table("CMG_Progress_Report_2014_05_success_rate.txt", head=TRUE, sep="\t")
-filedate <- "2014-05"
+# data <- read.table("CMG_Progress_Report_2014_05_success_rate.txt", head=TRUE, sep="\t")
+data <- read.table("UWCMG_Progress_Report_2014_07_10_success_rate.txt", head=TRUE, sep="\t")
+filedate <- "2014-07"
 
 
 modelnames <- c("AD", "AR", "AR\nconsang.", "de novo", "unknown", "X-linked", "Total")
@@ -42,9 +43,9 @@ nocohorts <- subset(include, subset=cohort=="N")
 success_v_model <- table(subset(nocohorts, select=c("Solved", "Model")))
 
 unsuccess_mapping <- table(subset(nocohorts, Solved=="N", select=c("Mapping_Data", "Model")))
-success_mapping <- table(subset(nocohorts, Solved=="Y", select=c("Mapping_Data", "Model")))
+success_mapping <- table(subset(nocohorts, Solved=="TIER 1 GENE", select=c("Mapping_Data", "Model")))
 total.unsuccess_mapping <- table(subset(nocohorts, Solved=="N", select=c("Mapping_Data")))
-total.success_mapping <- table(subset(nocohorts, Solved=="Y", select=c("Mapping_Data")))
+total.success_mapping <- table(subset(nocohorts, Solved=="TIER 1 GENE", select=c("Mapping_Data")))
 
 success_v_model.mapping <- data.frame( matrix(data=0, nrow=4, ncol=length(modelnames)), row.names=c("Solved, -mapping data", "Solved, +mapping data", "Unsolved, -mapping data", "Unsolved, +mapping data"))
 names(success_v_model.mapping) <- modelnames
@@ -72,9 +73,9 @@ dev.off()
 success_v_model.withNHBLI <- table(subset(include, select=c("Solved", "Model")))
 
 unsuccess_mapping.withNHBLI <- table(subset(include, Solved=="N", select=c("Mapping_Data", "Model")))
-success_mapping.withNHBLI <- table(subset(include, Solved=="Y", select=c("Mapping_Data", "Model")))
+success_mapping.withNHBLI <- table(subset(include, Solved=="TIER 1 GENE", select=c("Mapping_Data", "Model")))
 total.unsuccess_mapping.withNHBLI <- table(subset(include, Solved=="N", select=c("Mapping_Data")))
-total.success_mapping.withNHBLI <- table(subset(include, Solved=="Y", select=c("Mapping_Data")))
+total.success_mapping.withNHBLI <- table(subset(include, Solved=="TIER 1 GENE", select=c("Mapping_Data")))
 
 success_v_model.mapping.withNHBLI <- data.frame( matrix(data=0, nrow=4, ncol=length(modelnames)), row.names=c("Solved, -mapping data", "Solved, +mapping data", "Unsolved, -mapping data", "Unsolved, +mapping data"))
 names(success_v_model.mapping.withNHBLI) <- modelnames
@@ -106,7 +107,7 @@ dev.off()
 # NOTE: need to manually add in the double hits
 ######################################################################################## 
 
-novelty_v_model <- table(subset(nocohorts, select=c("isNovel", "Model")))
+novelty_v_model <- table(subset(nocohorts, select=c("isNovel", "Model"), Solved=="TIER 1 GENE"))
 novel.totals <- rowSums(novelty_v_model)
 
 summary.novelty_v_model <- data.frame( matrix(data=cbind(novelty_v_model, novel.totals), nrow=2, ncol=length(modelnames)), row.names=c("Not Novel", "Novel"))
@@ -123,11 +124,11 @@ pdf(paste0("novelty.successes_v_model.",filedate,".pdf"), width=10, height=6)
 par(xpd=T, mar=c(5,4,4,6), oma=c(0,0,0,4))
 bars.x <- barplot(as.matrix(summary.novelty_v_model.ordered), beside=FALSE, col=colors.novelty, ylab="# of Solved Phenotypes (no cohorts)", xlab="Inheritance Model", border=NA, cex.main=0.95, cex.names=0.9)
 legend(8.5, 20, col=colors.novelty, legend=rownames(summary.novelty_v_model.ordered), border=NA, fill=colors.novelty, bty="n", cex=0.8, xpd=TRUE)
-text(x=bars.x, y=colSums(summary.novelty_v_model.ordered), labels=paste0(summary.novelty_v_model.ordered["Novel",], " of ", colSums(summary.novelty_v_model.ordered), " (", round(summary.novelty_v_model.ordered["Novel",]/colSums(summary.novelty_v_model.ordered), digits=2), ")"), xpd=TRUE, pos=3)
+text(x=bars.x, y=colSums(summary.novelty_v_model.ordered), labels=paste0(summary.novelty_v_model.ordered["Novel",], " of ", colSums(summary.novelty_v_model.ordered), " (", round(summary.novelty_v_model.ordered["Novel",]/colSums(summary.novelty_v_model.ordered), digits=2), ")"), xpd=TRUE, pos=3, cex=0.8)
 dev.off()
 
 ## with NHLBI cohorts
-novelty_v_model.withNHBLI <- table(subset(include, select=c("isNovel", "Model")))
+novelty_v_model.withNHBLI <- table(subset(include, select=c("isNovel", "Model"), Solved=="TIER 1 GENE"))
 novel.totals.withNHBLI <- rowSums(novelty_v_model.withNHBLI)
 
 summary.novelty_v_model.withNHBLI <- data.frame( matrix(data=cbind(novelty_v_model.withNHBLI, novel.totals.withNHBLI), nrow=2, ncol=length(modelnames)), row.names=c("Not Novel", "Novel"))
@@ -142,7 +143,7 @@ pdf(paste0("novelty.successes_v_model.withNHLBI.",filedate,".pdf"), width=10, he
 par(xpd=T, mar=c(5,4,4,6), oma=c(0,0,0,4))
 bars.x <- barplot(as.matrix(summary.novelty_v_model.ordered.withNHBLI), beside=FALSE, col=colors.novelty, ylab="# of Solved Phenotypes", xlab="Inheritance Model", border=NA, cex.main=0.95, cex.names=0.9)
 legend(8.5, 20, col=colors.novelty, legend=rownames(summary.novelty_v_model.ordered.withNHBLI), border=NA, fill=colors.novelty, bty="n", cex=0.8, xpd=TRUE)
-text(x=bars.x, y=colSums(summary.novelty_v_model.ordered.withNHBLI), labels=paste0(summary.novelty_v_model.ordered.withNHBLI["Novel",], " of ", colSums(summary.novelty_v_model.ordered.withNHBLI), " (", round(summary.novelty_v_model.ordered.withNHBLI["Novel",]/colSums(summary.novelty_v_model.ordered.withNHBLI), digits=2), ")"), xpd=TRUE, pos=3)
+text(x=bars.x, y=colSums(summary.novelty_v_model.ordered.withNHBLI), labels=paste0(summary.novelty_v_model.ordered.withNHBLI["Novel",], " of ", colSums(summary.novelty_v_model.ordered.withNHBLI), " (", round(summary.novelty_v_model.ordered.withNHBLI["Novel",]/colSums(summary.novelty_v_model.ordered.withNHBLI), digits=2), ")"), xpd=TRUE, pos=3, cex=0.8)
 dev.off()
 
 
@@ -152,17 +153,17 @@ dev.off()
 ########################################################################################
 
 # with cohorts
-# nkindreds.withcohorts.success <- sum(subset(include, select=nkindreds, subset=Solved=="Y"))
+# nkindreds.withcohorts.success <- sum(subset(include, select=nkindreds, subset=Solved=="TIER 1 GENE"))
 nkindreds.withcohorts.unsuccess <- sum(subset(include, select=nkindreds, subset=Solved=="N"))
-nkindreds.withcohorts.success.novel <- sum(subset(include, select=nkindreds, subset=(Solved=="Y"&isNovel=="Y")))
-nkindreds.withcohorts.success.notnovel <- sum(subset(include, select=nkindreds, subset=(Solved=="Y"&isNovel=="N")))
+nkindreds.withcohorts.success.novel <- sum(subset(include, select=nkindreds, subset=(Solved=="TIER 1 GENE"&isNovel=="Y")))
+nkindreds.withcohorts.success.notnovel <- sum(subset(include, select=nkindreds, subset=(Solved=="TIER 1 GENE"&isNovel=="N")))
 nkindreds.withcohorts <- as.matrix(rbind(nkindreds.withcohorts.success.novel, nkindreds.withcohorts.success.notnovel, nkindreds.withcohorts.unsuccess))
 
 # without cohorts
-# nkindreds.nocohorts.success <- sum(subset(nocohorts, select=nkindreds, subset=Solved=="Y"))
+# nkindreds.nocohorts.success <- sum(subset(nocohorts, select=nkindreds, subset=Solved=="TIER 1 GENE"))
 nkindreds.nocohorts.unsuccess <- sum(subset(nocohorts, select=nkindreds, subset=Solved=="N"))
-nkindreds.nocohorts.success.novel <- sum(subset(nocohorts, select=nkindreds, subset=(Solved=="Y"&isNovel=="Y")))
-nkindreds.nocohorts.success.notnovel <- sum(subset(nocohorts, select=nkindreds, subset=(Solved=="Y"&isNovel=="N")))
+nkindreds.nocohorts.success.novel <- sum(subset(nocohorts, select=nkindreds, subset=(Solved=="TIER 1 GENE"&isNovel=="Y")))
+nkindreds.nocohorts.success.notnovel <- sum(subset(nocohorts, select=nkindreds, subset=(Solved=="TIER 1 GENE"&isNovel=="N")))
 nkindreds.nocohorts <- as.matrix(rbind(nkindreds.nocohorts.success.novel, nkindreds.nocohorts.success.notnovel, nkindreds.nocohorts.unsuccess))
 
 successrate.bykindred <- as.matrix(cbind(nkindreds.withcohorts, nkindreds.nocohorts))
